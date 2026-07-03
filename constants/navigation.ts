@@ -1,4 +1,11 @@
-export const websiteNavigation = [
+type NavigationItem = {
+  label: string;
+  href: string;
+  disabled?: boolean;
+  children?: NavigationItem[];
+};
+
+export const websiteNavigation: NavigationItem[] = [
   {
     label: "Home",
     href: "/",
@@ -10,6 +17,7 @@ export const websiteNavigation = [
   {
     label: "Admissions",
     href: "/admissions",
+    children: [],
   },
   {
     label: "News",
