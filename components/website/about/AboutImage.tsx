@@ -15,7 +15,7 @@ export default function AboutImage() {
       </div>
 
       {/* Floating Card */}
-      <div className="absolute bottom-0 right-6 translate-y-1/2 hidden lg:block">
+      <div className="absolute bottom-0 right-[-27] translate-y-1/2 hidden lg:block">
         <div className="w-56 rounded-xl bg-[#154734] p-6 shadow-2xl">
           <Star className="mb-4 h-6 w-6 text-[#C8A548]" strokeWidth={2} />
 
