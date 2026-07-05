@@ -4,8 +4,8 @@ export default function FooterBrand() {
   return (
     <div>
       <div className="flex items-center gap-3">
-        <div className="rounded-xl bg-accent p-3">
-          <GraduationCap className="h-6 w-6 text-primary" />
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm">
+          <GraduationCap className="h-6 w-6" />
         </div>
 
         <div>

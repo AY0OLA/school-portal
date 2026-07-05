@@ -8,7 +8,7 @@ export const galleryImages = [
   {
     id: 2,
     image:
-      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=900&q=80",
+      "https://graduatecoach.co.uk/wp-content/uploads/2019/09/academy-celebrate-celebration-267885-1-1024x683.jpg",
     title: "Graduation Day",
   },
   {

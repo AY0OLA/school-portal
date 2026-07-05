@@ -16,7 +16,7 @@ export default function Logo() {
         <h1 className="text-lg font-bold leading-none">Greenfield Academy</h1>
 
         <p className="text-xs text-muted-foreground">
-          Excellence • Integrity • Innovation
+          Excellence • Integrity • Leadership
         </p>
       </div>
     </Link>

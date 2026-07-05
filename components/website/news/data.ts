@@ -5,7 +5,7 @@ export const newsData = [
     date: "July 15, 2026",
     category: "Admissions",
     image:
-      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=900&q=80",
+      "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1600&h=900&fit=crop&auto=format",
     description:
       "Applications are now open for prospective students into all classes.",
   },

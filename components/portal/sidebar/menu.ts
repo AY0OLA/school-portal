@@ -1,0 +1,109 @@
+import {
+  LayoutDashboard,
+  Users,
+  GraduationCap,
+  BookOpen,
+  ClipboardCheck,
+  Wallet,
+  Megaphone,
+  Settings,
+  LogOut,
+} from "lucide-react";
+
+export const sidebarMenu = [
+  {
+    title: "MAIN",
+    items: [
+      {
+        label: "Dashboard",
+        href: "/admin",
+        icon: LayoutDashboard,
+      },
+    ],
+  },
+
+  {
+    title: "USERS",
+    items: [
+      {
+        label: "Students",
+        href: "/admin/students",
+        icon: GraduationCap,
+      },
+      {
+        label: "Teachers",
+        href: "/admin/teachers",
+        icon: Users,
+      },
+      {
+        label: "Parents",
+        href: "/admin/parents",
+        icon: Users,
+      },
+    ],
+  },
+
+  {
+    title: "ACADEMICS",
+    items: [
+      {
+        label: "Classes",
+        href: "/admin/classes",
+        icon: BookOpen,
+      },
+      {
+        label: "Subjects",
+        href: "/admin/subjects",
+        icon: BookOpen,
+      },
+      {
+        label: "Attendance",
+        href: "/admin/attendance",
+        icon: ClipboardCheck,
+      },
+      {
+        label: "Results",
+        href: "/admin/results",
+        icon: ClipboardCheck,
+      },
+    ],
+  },
+
+  {
+    title: "FINANCE",
+    items: [
+      {
+        label: "Fees",
+        href: "/admin/fees",
+        icon: Wallet,
+      },
+    ],
+  },
+
+  {
+    title: "COMMUNICATION",
+    items: [
+      {
+        label: "Announcements",
+        href: "/admin/announcements",
+        icon: Megaphone,
+      },
+    ],
+  },
+
+  {
+    title: "SYSTEM",
+    items: [
+      {
+        label: "Settings",
+        href: "/admin/settings",
+        icon: Settings,
+      },
+      {
+        label: "Logout",
+        href: "/logout",
+        icon: LogOut,
+      },
+    ],
+  },
+];

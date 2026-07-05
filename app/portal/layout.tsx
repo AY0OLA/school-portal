@@ -1,11 +1,20 @@
-import type { ReactNode } from "react";
+import Sidebar from "@/components/portal/sidebar";
+import Header from "@/components/portal/header";
 
-export default function PortalLayout({ children }: { children: ReactNode }) {
+export default function PortalLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="flex min-h-screen">
-      <aside>Sidebar</aside>
+    <div className="flex min-h-screen bg-slate-100">
+      <Sidebar />
 
-      <main className="flex-1">{children}</main>
+      <div className="flex flex-1 flex-col">
+        <Header />
+
+        <main className="flex-1 p-8">{children}</main>
+      </div>
     </div>
   );
 }
