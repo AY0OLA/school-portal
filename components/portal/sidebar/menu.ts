@@ -1,13 +1,14 @@
 import {
   LayoutDashboard,
-  Users,
   GraduationCap,
+  Users,
   BookOpen,
   ClipboardCheck,
   Wallet,
   Megaphone,
   Settings,
   LogOut,
+  School,
 } from "lucide-react";
 
 export const sidebarMenu = [
@@ -49,7 +50,7 @@ export const sidebarMenu = [
       {
         label: "Classes",
         href: "/admin/classes",
-        icon: BookOpen,
+        icon: School,
       },
       {
         label: "Subjects",

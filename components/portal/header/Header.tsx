@@ -2,7 +2,7 @@ import { Bell, Search, UserCircle } from "lucide-react";
 
 export default function Header() {
   return (
-    <header className="flex h-20 items-center justify-between border-b bg-white px-8">
+    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b bg-white px-8">
       <div className="relative">
         <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
 
