@@ -1,32 +1,8 @@
 import Link from "next/link";
 import { UserPlus, ClipboardCheck, FileText, Megaphone } from "lucide-react";
+import { quickActions } from "@/lib/mock-data";
 
-const actions = [
-  {
-    title: "Add Student",
-    href: "/admin/students/new",
-    icon: UserPlus,
-    color: "bg-blue-100 text-blue-600",
-  },
-  {
-    title: "Take Attendance",
-    href: "/admin/attendance",
-    icon: ClipboardCheck,
-    color: "bg-green-100 text-green-600",
-  },
-  {
-    title: "Publish Results",
-    href: "/admin/results",
-    icon: FileText,
-    color: "bg-purple-100 text-purple-600",
-  },
-  {
-    title: "Announcement",
-    href: "/admin/announcements/new",
-    icon: Megaphone,
-    color: "bg-orange-100 text-orange-600",
-  },
-];
+
 
 export default function QuickActions() {
   return (
@@ -34,7 +10,7 @@ export default function QuickActions() {
       <h2 className="mb-6 text-xl font-semibold">Quick Actions</h2>
 
       <div className="grid grid-cols-2 gap-4">
-        {actions.map((action) => {
+        {quickActions.map((action) => {
           const Icon = action.icon;
 
           return (

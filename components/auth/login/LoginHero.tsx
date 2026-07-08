@@ -2,7 +2,7 @@ import { GraduationCap } from "lucide-react";
 
 export default function LoginHero() {
   return (
-    <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-primary text-white">
+    <div className="relative hidden lg:flex  justify-between overflow-hidden bg-primary text-white">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center"

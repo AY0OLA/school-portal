@@ -1,27 +1,6 @@
 import { UserPlus, Wallet, ClipboardCheck, Bell } from "lucide-react";
+import { recentActivities } from "@/lib/mock-data";
 
-const activities = [
-  {
-    title: "New student registered",
-    time: "10 mins ago",
-    icon: UserPlus,
-  },
-  {
-    title: "Fee payment received",
-    time: "30 mins ago",
-    icon: Wallet,
-  },
-  {
-    title: "Attendance submitted",
-    time: "1 hour ago",
-    icon: ClipboardCheck,
-  },
-  {
-    title: "Announcement published",
-    time: "Today",
-    icon: Bell,
-  },
-];
 
 export default function RecentActivities() {
   return (
@@ -29,7 +8,7 @@ export default function RecentActivities() {
       <h2 className="mb-6 text-xl font-semibold">Recent Activities</h2>
 
       <div className="space-y-5">
-        {activities.map((activity) => {
+        {recentActivities.map((activity) => {
           const Icon = activity.icon;
 
           return (

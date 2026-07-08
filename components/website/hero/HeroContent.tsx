@@ -33,7 +33,6 @@ export default function HeroContent() {
           {heroContent.secondaryButton}
         </Button>
       </div>
-      
     </div>
   );
 }
