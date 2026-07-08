@@ -11,33 +11,33 @@ const columns = [
   {
     id: "employeeId",
     header: "Employee ID",
-    accessor: "employeeId",
+    accessor: "employeeId" as const,
   },
   {
     id: "teacher",
     header: "Teacher",
-    accessor: "name",
+    accessor: "name" as const,
   },
   {
     id: "email",
     header: "Email",
-    accessor: "email",
+    accessor: "email" as const,
   },
   {
     id: "phone",
     header: "Phone",
-    accessor: "phone",
+    accessor: "phone" as const,
   },
   {
     id: "status",
     header: "Status",
-    accessor: "status",
+    accessor: "status" as const,
     render: (row: any) => <TeacherStatus status={row.status} />,
   },
   {
     id: "actions",
     header: "Actions",
-    accessor: "id",
+    accessor: "id" as const,
     render: (row: any) => <TeacherActions id={row.id} />,
   },
 ];
