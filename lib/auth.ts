@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import type { Role } from "@prisma/client";
 
 export async function currentUser() {
   const session = await auth();
@@ -17,14 +18,10 @@ export async function requireAuth() {
   return user;
 }
 
-export async function requireRole(
-  roles: Array<
-    "SUPER_ADMIN" | "ADMIN" | "TEACHER" | "STUDENT" | "PARENT" | "ACCOUNTANT"
-  >,
-) {
+export async function requireRole(roles: Role[]) {
   const user = await requireAuth();
 
-  if (!roles.includes(user.role as any)) {
+  if (!roles.includes(user.role)) {
     redirect("/unauthorized");
   }
 
