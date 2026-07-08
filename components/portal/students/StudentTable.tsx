@@ -1,8 +1,6 @@
 "use client";
 
 import { DataTable } from "@/components/ui/table";
-import { students } from "@/lib/mock-data";
-
 import StudentStatus from "./StudentStatus";
 import StudentActions from "./StudentActions";
 
@@ -36,11 +34,15 @@ const columns = [
   {
     id: "actions",
     header: "Actions",
-    accessor: "id",
-    render: (row: any) => <StudentActions id={row.id} />,
+    accessor: "studentId",
+    render: (row: any) => <StudentActions id={row.studentId} />,
   },
 ];
 
-export default function StudentTable() {
-  return <DataTable columns={columns} data={students} />;
+type StudentTableProps = {
+  data: any[];
+};
+
+export default function StudentTable({ data }: StudentTableProps) {
+  return <DataTable columns={columns} data={data} />;
 }

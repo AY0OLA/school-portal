@@ -31,9 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email: credentials.email as string,
           },
         });
-
         if (!user) return null;
-
         const validPassword = await bcrypt.compare(
           credentials.password as string,
           user.password,
@@ -50,7 +48,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-
   callbacks: {
     async jwt({ token, user }) {
       if (user) {

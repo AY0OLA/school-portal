@@ -1,31 +1,85 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import FormSection from "./FormSection";
 
-import { Input, Select, Textarea, Button } from "@/components/ui/form";
-import { FileUpload } from "@/components/ui/form";
-import { studentSchema, StudentFormData } from "@/lib/validations";
+import {
+  Input,
+  Select,
+  Textarea,
+  Button,
+  FileUpload,
+} from "@/components/ui/form";
 
-export default function StudentForm() {
+import { createStudent } from "@/lib/actions";
+import { updateStudent } from "@/lib/actions/update-student";
+import {
+  studentSchema,
+  StudentFormData,
+} from "@/lib/validations";
+
+type StudentFormProps = {
+  mode?: "create" | "edit";
+  initialData?: (Partial<StudentFormData> & {
+    id: string;
+  }) | null;
+};
+
+export default function StudentForm({
+  mode = "create",
+  initialData = null,
+}: StudentFormProps) {
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<StudentFormData>({
     resolver: zodResolver(studentSchema),
+    defaultValues: initialData ?? {},
   });
 
-  const onSubmit = (data: StudentFormData) => {
-    console.log(data);
+  const onSubmit = async (data: StudentFormData) => {
+    try {
+      setLoading(true);
 
-    alert("Student Registered Successfully!");
+      const result =
+        mode === "create"
+          ? await createStudent(data)
+          : await updateStudent(initialData!.id, data);
+
+      if (!result.success) {
+        alert("Something went wrong.");
+        return;
+      }
+
+      alert(
+        mode === "create"
+          ? "Student registered successfully!"
+          : "Student updated successfully!",
+      );
+
+      router.push("/admin/students");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      alert("An unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+
+
       <FormSection
         title="Personal Information"
         description="Basic student details."
@@ -59,8 +113,14 @@ export default function StudentForm() {
           error={errors.gender?.message}
           {...register("gender")}
           options={[
-            { label: "Male", value: "male" },
-            { label: "Female", value: "female" },
+            {
+              label: "Male",
+              value: "MALE",
+            },
+            {
+              label: "Female",
+              value: "FEMALE",
+            },
           ]}
         />
 
@@ -81,7 +141,7 @@ export default function StudentForm() {
 
         <Input
           label="Nationality"
-          defaultValue="Nigerian"
+          placeholder="Nigerian"
           error={errors.nationality?.message}
           {...register("nationality")}
         />
@@ -100,6 +160,7 @@ export default function StudentForm() {
           {...register("address")}
         />
       </FormSection>
+
 
       <FormSection
         title="Academic Information"
@@ -157,8 +218,14 @@ export default function StudentForm() {
           error={errors.session?.message}
           {...register("session")}
           options={[
-            { label: "2026/2027", value: "2026/2027" },
-            { label: "2027/2028", value: "2027/2028" },
+            {
+              label: "2026/2027",
+              value: "2026/2027",
+            },
+            {
+              label: "2027/2028",
+              value: "2027/2028",
+            },
           ]}
         />
 
@@ -167,9 +234,26 @@ export default function StudentForm() {
           error={errors.status?.message}
           {...register("status")}
           options={[
-            { label: "Active", value: "Active" },
-            { label: "Pending", value: "Pending" },
-            { label: "Suspended", value: "Suspended" },
+            {
+              label: "Active",
+              value: "ACTIVE",
+            },
+            {
+              label: "Pending",
+              value: "PENDING",
+            },
+            {
+              label: "Suspended",
+              value: "SUSPENDED",
+            },
+            {
+              label: "Graduated",
+              value: "GRADUATED",
+            },
+            {
+              label: "Transferred",
+              value: "TRANSFERRED",
+            },
           ]}
         />
       </FormSection>
@@ -224,6 +308,7 @@ export default function StudentForm() {
         />
       </FormSection>
 
+
       <FormSection
         title="Medical Information"
         description="Student medical records."
@@ -265,9 +350,10 @@ export default function StudentForm() {
         />
       </FormSection>
 
+
       <FormSection
         title="Student Documents"
-        description="Upload student documents."
+        description="Upload all required student documents."
       >
         <div className="space-y-8 md:col-span-2">
           <FileUpload label="Passport Photograph" accept="image/*" />
@@ -282,7 +368,9 @@ export default function StudentForm() {
       </FormSection>
 
       <div className="flex justify-end">
-        <Button type="submit">Save Student</Button>
+        <Button type="submit" loading={loading}>
+          {mode === "create" ? "Save Student" : "Update Student"}
+        </Button>
       </div>
     </form>
   );

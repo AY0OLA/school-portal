@@ -1,8 +1,21 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import StudentTable from "@/components/portal/students/StudentTable";
 
-export default function StudentsPage() {
+import StudentTable from "@/components/portal/students/StudentTable";
+import { getStudents } from "@/lib/services/student.service";
+
+export default async function StudentsPage() {
+  const students = await getStudents();
+
+  const tableData = students.map((student) => ({
+    id: student.admissionNumber,
+    name: `${student.firstName} ${student.lastName}`,
+    class: student.class?.name ?? "Not Assigned",
+    gender: student.gender,
+    status: student.status,
+    studentId: student.id,
+  }));
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
@@ -21,7 +34,7 @@ export default function StudentsPage() {
         </Link>
       </div>
 
-      <StudentTable />
+      <StudentTable data={tableData} />
     </div>
   );
 }
