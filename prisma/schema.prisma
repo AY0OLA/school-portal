@@ -7,167 +7,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model AcademicSession {
-  id          String       @id @default(cuid())
-  name        String       @unique
-  isCurrent   Boolean      @default(false)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  enrollments Enrollment[]
-  terms       Term[]
-}
-
-model User {
-  id            String    @id @default(cuid())
-  name          String
-  email         String    @unique
-  password      String
-  role          Role
-  image         String?
-  isActive      Boolean   @default(true)
-  emailVerified DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  student       Student?
-  teacher       Teacher?
-}
-
-model Class {
-  id          String       @id @default(cuid())
-  name        String
-  arm         String
-  teacherId   String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  teacher     Teacher?     @relation(fields: [teacherId], references: [id])
-  enrollments Enrollment[]
-  students    Student[]
-}
-
-model Student {
-  id               String        @id @default(cuid())
-  admissionNumber  String        @unique
-  firstName        String
-  middleName       String?
-  lastName         String
-  gender           Gender
-  dob              DateTime
-  state            String?
-  nationality      String?
-  religion         String?
-  address          String?
-  phone            String?
-  email            String?
-  bloodGroup       String?
-  genotype         String?
-  allergies        String?
-  medicalCondition String?
-  emergencyContact String?
-  status           StudentStatus @default(ACTIVE)
-  passport         String?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  userId           String?       @unique
-  parentId         String?
-  classId          String?
-  enrollments      Enrollment[]
-  class            Class?        @relation(fields: [classId], references: [id])
-  parent           Parent?       @relation(fields: [parentId], references: [id])
-  user             User?         @relation(fields: [userId], references: [id])
-}
-
-model Term {
-  id        String          @id @default(cuid())
-  name      String
-  sessionId String
-  createdAt DateTime        @default(now())
-  session   AcademicSession @relation(fields: [sessionId], references: [id])
-}
-
-model Teacher {
-  id         String        @id @default(cuid())
-  employeeId String        @unique
-  firstName  String
-  lastName   String
-  email      String?       @unique
-  phone      String?
-  gender     Gender
-  status     TeacherStatus @default(ACTIVE)
-  userId     String?       @unique
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-  classes    Class[]
-  user       User?         @relation(fields: [userId], references: [id])
-}
-
-model Parent {
-  id         String    @id @default(cuid())
-  firstName  String
-  lastName   String
-  phone      String
-  email      String?
-  occupation String?
-  address    String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  students   Student[]
-}
-
-model Enrollment {
-  id        String          @id @default(cuid())
-  studentId String
-  classId   String
-  sessionId String
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
-  class     Class           @relation(fields: [classId], references: [id])
-  session   AcademicSession @relation(fields: [sessionId], references: [id])
-  student   Student         @relation(fields: [studentId], references: [id])
-}
-
-model Subject {
-  id        String   @id @default(cuid())
-  name      String
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
+//////////////////////////////////////////////////////
+// ENUMS
+//////////////////////////////////////////////////////
 
 enum Role {
   SUPER_ADMIN
@@ -197,4 +39,480 @@ enum TeacherStatus {
   ACTIVE
   INACTIVE
   ON_LEAVE
+}
+
+enum BloodGroup {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+}
+
+enum Genotype {
+  AA
+  AS
+  AC
+  SS
+  SC
+}
+
+//////////////////////////////////////////////////////
+// USER
+//////////////////////////////////////////////////////
+
+model User {
+  id String @id @default(cuid())
+
+  name     String
+  email    String @unique
+  password String
+
+  role Role
+
+  image String?
+
+  isActive Boolean @default(true)
+
+  emailVerified DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  student Student?
+  teacher Teacher?
+
+  accounts Account[]
+  sessions Session[]
+  Parent   Parent?
+
+  @@index([email])
+  @@index([role])
+}
+
+//////////////////////////////////////////////////////
+// ACADEMIC SESSION
+//////////////////////////////////////////////////////
+
+model AcademicSession {
+  id String @id @default(cuid())
+
+  name String @unique
+
+  startDate DateTime?
+  endDate   DateTime?
+
+  isCurrent Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  enrollments Enrollment[]
+
+  terms Term[]
+}
+
+//////////////////////////////////////////////////////
+// TEACHER
+//////////////////////////////////////////////////////
+
+model Teacher {
+  id String @id @default(cuid())
+
+  // Employment
+  employeeId     String    @unique
+  employmentDate DateTime?
+
+  // Personal Information
+  firstName  String
+  middleName String?
+  lastName   String
+  gender     Gender
+  dob        DateTime?
+
+  // Contact
+  phone   String?
+  email   String? @unique
+  address String?
+
+  // Professional
+  qualification  String?
+  specialization String?
+
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+
+  // Media
+  passport String?
+
+  // Authentication
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id])
+
+  // Status
+  status TeacherStatus @default(ACTIVE)
+
+  // Relationships
+  classTeacherOf Class[] @relation("ClassTeacher")
+
+  teacherSubjects TeacherSubject[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([employeeId])
+  @@index([departmentId])
+  @@index([status])
+}
+
+//////////////////////////////////////////////////////
+// SUBJECT
+//////////////////////////////////////////////////////
+
+model Subject {
+  id String @id @default(cuid())
+
+  name String
+  code String @unique
+
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teacherSubjects TeacherSubject[]
+
+  classSubjects ClassSubject[]
+
+  @@index([code])
+  @@index([name])
+}
+
+model TeacherSubject {
+  id String @id @default(cuid())
+
+  teacherId String
+  subjectId String
+
+  teacher Teacher @relation(fields: [teacherId], references: [id])
+  subject Subject @relation(fields: [subjectId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([teacherId, subjectId])
+  @@index([teacherId])
+  @@index([subjectId])
+}
+
+model ClassSubject {
+  id String @id @default(cuid())
+
+  classId   String
+  subjectId String
+
+  class   Class   @relation(fields: [classId], references: [id])
+  subject Subject @relation(fields: [subjectId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([classId, subjectId])
+  @@index([classId])
+  @@index([subjectId])
+}
+
+//////////////////////////////////////////////////////
+// CLASS
+//////////////////////////////////////////////////////
+
+model Class {
+  id String @id @default(cuid())
+
+  name String
+  arm  String
+
+  capacity Int?
+
+  room String?
+
+  description String?
+
+  classTeacherId String?
+
+  classTeacher Teacher? @relation("ClassTeacher", fields: [classTeacherId], references: [id])
+
+  students Student[]
+
+  enrollments Enrollment[]
+
+  classSubjects ClassSubject[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, arm])
+  @@index([classTeacherId])
+}
+
+//////////////////////////////////////////////////////
+// PARENT
+//////////////////////////////////////////////////////
+
+model Parent {
+  id String @id @default(cuid())
+
+  // Personal Information
+  firstName  String
+  middleName String?
+  lastName   String
+
+  gender       Gender?
+  relationship String?
+
+  dob DateTime?
+
+  // Contact
+  phone          String
+  alternatePhone String?
+
+  email String?
+
+  address String?
+
+  state String?
+
+  nationality String?
+
+  // Employment
+  occupation String?
+  employer   String?
+
+  // Portal
+  passport String?
+
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  students Student[]
+
+  @@index([phone])
+  @@index([email])
+}
+
+//////////////////////////////////////////////////////
+// STUDENT
+//////////////////////////////////////////////////////
+
+model Student {
+  id String @id @default(cuid())
+
+  // Admission
+  admissionNumber String    @unique
+  admissionDate   DateTime?
+  admissionType   String?
+
+  // Personal Information
+  firstName  String
+  middleName String?
+  lastName   String
+
+  gender Gender
+
+  dob DateTime
+
+  state String?
+  lga   String?
+
+  nationality String?
+  religion    String?
+
+  address String?
+
+  passport String?
+
+  // Contact
+  phone String?
+  email String?
+
+  // Medical
+  bloodGroup BloodGroup?
+  genotype   Genotype?
+
+  allergies        String?
+  medicalCondition String?
+
+  emergencyContact String?
+
+  medicalNotes String?
+
+  // Academic
+  status StudentStatus @default(ACTIVE)
+
+  house String?
+
+  previousSchool String?
+
+  // Relationships
+
+  classId String?
+  class   Class?  @relation(fields: [classId], references: [id])
+
+  parentId String?
+  parent   Parent? @relation(fields: [parentId], references: [id])
+
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id])
+
+  enrollments Enrollment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([admissionNumber])
+  @@index([classId])
+  @@index([parentId])
+  @@index([status])
+}
+
+//////////////////////////////////////////////////////
+// ENROLLMENT
+//////////////////////////////////////////////////////
+
+model Enrollment {
+  id String @id @default(cuid())
+
+  studentId String
+
+  classId String
+
+  sessionId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  student Student @relation(fields: [studentId], references: [id])
+
+  class Class @relation(fields: [classId], references: [id])
+
+  session AcademicSession @relation(fields: [sessionId], references: [id])
+
+  @@unique([studentId, sessionId])
+  @@index([studentId])
+  @@index([classId])
+  @@index([sessionId])
+}
+
+//////////////////////////////////////////////////////
+// DEPARTMENT
+//////////////////////////////////////////////////////
+
+model Department {
+  id String @id @default(cuid())
+
+  name String @unique
+
+  description String?
+
+  hodId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teachers Teacher[]
+
+  @@index([name])
+}
+
+//////////////////////////////////////////////////////
+// TERM
+//////////////////////////////////////////////////////
+
+model Term {
+  id String @id @default(cuid())
+
+  name String
+
+  sessionId String
+
+  startDate DateTime?
+
+  endDate DateTime?
+
+  isCurrent Boolean @default(false)
+
+  session AcademicSession @relation(fields: [sessionId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sessionId])
+}
+
+//////////////////////////////////////////////////////
+// ACCOUNT
+//////////////////////////////////////////////////////
+
+model Account {
+  id String @id @default(cuid())
+
+  userId String
+
+  type String
+
+  provider String
+
+  providerAccountId String
+
+  refresh_token String?
+
+  access_token String?
+
+  expires_at Int?
+
+  token_type String?
+
+  scope String?
+
+  id_token String?
+
+  session_state String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+//////////////////////////////////////////////////////
+// SESSION
+//////////////////////////////////////////////////////
+
+model Session {
+  id String @id @default(cuid())
+
+  sessionToken String @unique
+
+  userId String
+
+  expires DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+//////////////////////////////////////////////////////
+// VERIFICATION TOKEN
+//////////////////////////////////////////////////////
+
+model VerificationToken {
+  identifier String
+
+  token String @unique
+
+  expires DateTime
+
+  @@unique([identifier, token])
 }

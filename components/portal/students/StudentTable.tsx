@@ -8,7 +8,7 @@ const columns = [
   {
     id: "admission",
     header: "Admission No",
-    accessor: "id",
+    accessor: "admissionNumber",
   },
   {
     id: "student",

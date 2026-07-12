@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { StudentFormData } from "@/lib/validations";
+import { revalidatePath } from "next/cache";
 
 export async function createStudent(data: StudentFormData) {
   try {
@@ -38,7 +39,7 @@ export async function createStudent(data: StudentFormData) {
           | "TRANSFERRED",
       },
     });
-
+    revalidatePath("/admin/students");
     return {
       success: true,
       student,

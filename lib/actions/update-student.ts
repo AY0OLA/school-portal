@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { StudentFormData } from "@/lib/validations";
+import { revalidatePath } from "next/cache";
 
 export async function updateStudent(id: string, data: StudentFormData) {
   await prisma.student.update({
@@ -32,7 +33,7 @@ export async function updateStudent(id: string, data: StudentFormData) {
       status: data.status as any,
     },
   });
-
+  revalidatePath("/admin/students");
   return {
     success: true,
   };

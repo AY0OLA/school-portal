@@ -7,14 +7,14 @@ import { getStudents } from "@/lib/services/student.service";
 export default async function StudentsPage() {
   const students = await getStudents();
 
-  const tableData = students.map((student) => ({
-    id: student.admissionNumber,
-    name: `${student.firstName} ${student.lastName}`,
-    class: student.class?.name ?? "Not Assigned",
-    gender: student.gender,
-    status: student.status,
-    studentId: student.id,
-  }));
+ const tableData = students.map((student) => ({
+   admissionNumber: student.admissionNumber,
+   name: `${student.firstName} ${student.lastName}`,
+   class: student.class?.name ?? "Not Assigned",
+   gender: student.gender,
+   status: student.status,
+   studentId: student.id,
+ }));
 
   return (
     <div className="space-y-6">

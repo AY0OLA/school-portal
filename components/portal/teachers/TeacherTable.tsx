@@ -2,8 +2,6 @@
 
 import { DataTable } from "@/components/ui/table";
 
-import { teachers } from "@/lib/mock-data/teachers";
-
 import TeacherStatus from "./TeacherStatus";
 import TeacherActions from "./TeacherActions";
 
@@ -11,37 +9,41 @@ const columns = [
   {
     id: "employeeId",
     header: "Employee ID",
-    accessor: "employeeId" as const,
+    accessor: "employeeId",
   },
   {
     id: "teacher",
     header: "Teacher",
-    accessor: "name" as const,
+    accessor: "name",
   },
   {
-    id: "email",
-    header: "Email",
-    accessor: "email" as const,
+    id: "department",
+    header: "Department",
+    accessor: "department",
   },
   {
     id: "phone",
     header: "Phone",
-    accessor: "phone" as const,
+    accessor: "phone",
   },
   {
     id: "status",
     header: "Status",
-    accessor: "status" as const,
+    accessor: "status",
     render: (row: any) => <TeacherStatus status={row.status} />,
   },
   {
     id: "actions",
     header: "Actions",
-    accessor: "id" as const,
+    accessor: "id",
     render: (row: any) => <TeacherActions id={row.id} />,
   },
 ];
 
-export default function TeacherTable() {
-  return <DataTable columns={columns} data={teachers} />;
+type TeacherTableProps = {
+  data: any[];
+};
+
+export default function TeacherTable({ data }: TeacherTableProps) {
+  return <DataTable columns={columns} data={data} />;
 }
