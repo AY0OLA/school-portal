@@ -1,18 +1,27 @@
 import DashboardHeader from "./DashboardHeader";
 import StatsGrid from "./StatsGrid";
+import Charts from "./charts";
 import QuickActions from "./QuickActions";
 import RecentActivities from "./RecentActivities";
 
-export default function AdminDashboard() {
+import { getDashboardData } from "@/lib/services/dashboard.service";
+
+export default async function Dashboard() {
+  const { stats, activities, genderChart, classChart } =
+    await getDashboardData();
   return (
-    <div className="space-y-8">
+    <main className="space-y-8">
       <DashboardHeader />
 
-      <StatsGrid />
-      <div className="grid gap-8 lg:grid-cols-2">
+      <StatsGrid stats={stats} />
+
+      <Charts genderData={genderChart} classData={classChart} />
+
+      <section className="grid gap-8 xl:grid-cols-2">
         <QuickActions />
-        <RecentActivities />
-      </div>
-    </div>
+
+        <RecentActivities activities={activities} />
+      </section>
+    </main>
   );
 }
