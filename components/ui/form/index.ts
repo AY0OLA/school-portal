@@ -12,4 +12,5 @@ export { default as FormInput } from "./FormInput";
 export { default as FormDateInput } from "./FormDateInput";
 export { default as FormCheckbox } from "./FormCheckbox";
 export { default as FormActions } from "./FormActions";
+export { default as FormTextarea } from "./FormTextarea";
 export { default as FormSelect } from "./FormSelect";

@@ -67,6 +67,16 @@ export const sidebarMenu = [
         href: "/admin/results",
         icon: ClipboardCheck,
       },
+      {
+        label: "Teacher Assignments",
+        href: "/admin/academics/teacher-subjects",
+        icon: BookOpen,
+      },
+      {
+        label: "Class Subjects",
+        href: "/admin/academics/class-subjects",
+        icon: BookOpen,
+      },
     ],
   },
 
