@@ -1,12 +1,5 @@
-import Dashboard from "@/components/portal/dashboard";
-import Charts from "@/components/portal/dashboard/charts";
+import { Dashboard } from "@/components/portal/dashboard";
 
-export default function LoginPage() {
-  return (
-    <>
-      <Dashboard />
-
-      <Charts />
-    </>
-  );
+export default function AdminPage() {
+  return <Dashboard />;
 }

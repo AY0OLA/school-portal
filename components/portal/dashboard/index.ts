@@ -4,6 +4,5 @@ export { default as StatsGrid } from "./StatsGrid";
 export { default as StatCard } from "./StatCard";
 export { default as QuickActions } from "./QuickActions";
 export { default as RecentActivities } from "./RecentActivities";
-// export { default as UpcomingEvents } from "./UpcomingEvents";
 
 export { default as Charts } from "./charts";

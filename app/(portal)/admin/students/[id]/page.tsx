@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Pencil } from "lucide-react";
-import { getStudentProfile } from "@/lib/services/student.service";
+import { getStudentById } from "@/lib/services/student.service";
 
 type Props = {
   params: Promise<{
@@ -12,7 +12,7 @@ type Props = {
 export default async function StudentProfilePage({ params }: Props) {
   const { id } = await params;
 
-  const student = await getStudentProfile(id);
+  const student = await getStudentById(id);
 
   if (!student) {
     notFound();
