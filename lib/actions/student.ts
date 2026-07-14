@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { StudentFormData } from "@/lib/validations";
 import { revalidatePath } from "next/cache";
+import { BloodGroup, Genotype } from "@prisma/client";
 
 export async function createStudent(data: StudentFormData) {
   try {
@@ -25,8 +26,9 @@ export async function createStudent(data: StudentFormData) {
         phone: data.phone || null,
         email: data.email || null,
 
-        bloodGroup: data.bloodGroup || null,
-        genotype: data.genotype || null,
+        bloodGroup: data.bloodGroup ? (data.bloodGroup as BloodGroup) : null,
+
+        genotype: data.genotype ? (data.genotype as Genotype) : null,
         allergies: data.allergies || null,
         medicalCondition: data.medicalCondition || null,
         emergencyContact: data.emergencyContact || null,

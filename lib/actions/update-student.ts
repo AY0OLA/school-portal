@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { StudentFormData } from "@/lib/validations";
 import { revalidatePath } from "next/cache";
+import { BloodGroup, Genotype } from "@prisma/client";
 
 export async function updateStudent(id: string, data: StudentFormData) {
   await prisma.student.update({
@@ -24,8 +25,9 @@ export async function updateStudent(id: string, data: StudentFormData) {
       phone: data.phone,
       email: data.email,
 
-      bloodGroup: data.bloodGroup,
-      genotype: data.genotype,
+      bloodGroup: data.bloodGroup ? (data.bloodGroup as BloodGroup) : null,
+
+      genotype: data.genotype ? (data.genotype as Genotype) : null,
       allergies: data.allergies,
       medicalCondition: data.medicalCondition,
       emergencyContact: data.emergencyContact,
