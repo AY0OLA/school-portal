@@ -49,12 +49,12 @@ export const sidebarMenu = [
     items: [
       {
         label: "Classes",
-        href: "/admin/classes",
+        href: "/admin/academics/classes",
         icon: School,
       },
       {
         label: "Subjects",
-        href: "/admin/subjects",
+        href: "/admin/academics/subjects",
         icon: BookOpen,
       },
       {
