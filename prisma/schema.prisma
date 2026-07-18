@@ -28,6 +28,81 @@ model User {
   @@index([role])
 }
 
+model Result {
+  id String @id @default(cuid())
+
+  examId String
+
+  studentId String
+
+  total Float
+
+  average Float
+
+  position Int?
+
+  grade String?
+
+  remark String?
+
+  teacherComment String?
+
+  principalComment String?
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  exam Exam @relation(fields: [examId], references: [id])
+
+  student Student @relation(fields: [studentId], references: [id])
+
+  subjects ResultSubject[]
+
+  @@unique([examId, studentId])
+  @@index([examId])
+  @@index([studentId])
+}
+
+model ResultSubject {
+  id String @id @default(cuid())
+
+  resultId String
+
+  subjectId String
+
+  ca Float
+
+  exam Float
+
+  total Float
+
+  grade String
+
+  remark String
+
+  result Result @relation(fields: [resultId], references: [id])
+
+  subject Subject @relation(fields: [subjectId], references: [id])
+
+  @@index([resultId])
+  @@index([subjectId])
+}
+
+model GradingSystem {
+  id String @id @default(cuid())
+
+  grade String
+
+  minimum Float
+
+  maximum Float
+
+  remark String
+
+  points Float
+}
+
 model AcademicSession {
   id          String       @id @default(cuid())
   name        String       @unique
@@ -39,7 +114,7 @@ model AcademicSession {
   attendance  Attendance[]
   enrollments Enrollment[]
   terms       Term[]
-  exams Exam[]
+  exams       Exam[]
 }
 
 model Teacher {
@@ -81,8 +156,9 @@ model Subject {
   description     String?
   classSubjects   ClassSubject[]
   teacherSubjects TeacherSubject[]
-  examSubjects ExamSubject[]
-  examScores ExamScore[]
+  examSubjects    ExamSubject[]
+  examScores      ExamScore[]
+  resultSubjects  ResultSubject[]
 
   @@index([code])
   @@index([name])
@@ -129,7 +205,7 @@ model Class {
   classSubjects  ClassSubject[]
   enrollments    Enrollment[]
   students       Student[]
-  examClasses ExamClass[]
+  examClasses    ExamClass[]
 
   @@unique([name, arm])
   @@index([classTeacherId])
@@ -196,7 +272,8 @@ model Student {
   genotype         Genotype?
   attendance       Attendance[]
   enrollments      Enrollment[]
-  examScores ExamScore[]
+  examScores       ExamScore[]
+  results          Result[]
   class            Class?        @relation(fields: [classId], references: [id])
   parent           Parent?       @relation(fields: [parentId], references: [id])
   user             User?         @relation(fields: [userId], references: [id])
@@ -246,7 +323,7 @@ model Term {
   startDate DateTime?
   updatedAt DateTime        @updatedAt
   session   AcademicSession @relation(fields: [sessionId], references: [id])
-  exams Exam[]
+  exams     Exam[]
 
   @@index([sessionId])
 }
@@ -312,35 +389,42 @@ model Exam {
   name String
 
   sessionId String
-  termId String
+  termId    String
 
   totalMark Int @default(100)
 
   status ExamStatus @default(DRAFT)
 
   startDate DateTime?
-  endDate DateTime?
+  endDate   DateTime?
+
+  description String?
+
+  isPublished Boolean @default(false)
 
   session AcademicSession @relation(fields: [sessionId], references: [id])
+
   term Term @relation(fields: [termId], references: [id])
 
   classes ExamClass[]
 
   subjects ExamSubject[]
 
-  scores ExamScore[]
+  scores    ExamScore[]
+  results   Result[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  @@unique([name, sessionId, termId])
   @@index([sessionId])
   @@index([termId])
+  @@index([status])
 }
 
 model ExamClass {
   id String @id @default(cuid())
 
-  examId String
+  examId  String
   classId String
 
   exam Exam @relation(fields: [examId], references: [id])
@@ -350,9 +434,7 @@ model ExamClass {
   createdAt DateTime @default(now())
 
   @@unique([examId, classId])
-
   @@index([examId])
-
   @@index([classId])
 }
 
@@ -370,24 +452,26 @@ model ExamSubject {
   createdAt DateTime @default(now())
 
   @@unique([examId, subjectId])
-
   @@index([examId])
-
   @@index([subjectId])
 }
 
 model ExamScore {
   id String @id @default(cuid())
 
-  examId String
-
+  examId    String
   studentId String
-
   subjectId String
 
-  score Float
+  caScore Float @default(0)
 
-  remarks String?
+  examScore Float @default(0)
+
+  totalScore Float @default(0)
+
+  grade String?
+
+  remark String?
 
   exam Exam @relation(fields: [examId], references: [id])
 
@@ -400,11 +484,8 @@ model ExamScore {
   updatedAt DateTime @updatedAt
 
   @@unique([examId, studentId, subjectId])
-
   @@index([examId])
-
   @@index([studentId])
-
   @@index([subjectId])
 }
 

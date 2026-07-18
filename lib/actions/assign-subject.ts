@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { assignSubjectToExam } from "@/lib/services/exam-subject.service";
 
 import {
   teacherSubjectSchema,
@@ -29,4 +30,13 @@ export async function assignSubject(values: TeacherSubjectInput) {
   });
 
   revalidatePath("/admin/academics/teacher-subjects");
+}
+export async function assignSubjectAction(examId: string, subjectId: string) {
+  await assignSubjectToExam(examId, subjectId);
+
+  revalidatePath(`/admin/examinations/${examId}/subjects`);
+
+  return {
+    success: true,
+  };
 }
